@@ -1,6 +1,6 @@
 <template>
-    <div class="col-lg-6 offset-3">
-      <section class="content">
+  <div class="col-lg-6 offset-3">
+    <section class="content">
       <div class="container-fluid">
         <div class="row">
           <!-- left column -->
@@ -16,74 +16,87 @@
                 <div class="card-body">
                   <div class="form-group">
                     <label for="name">Category Title</label>
-                    
-                    <input type="text"
-                     v-model="Categoryform.title"
-                     name="title" class="form-control"
-                     id="title" placeholder="Enter Category"
-                     :class="{ 'is-invalid': Categoryform.errors.has('title') }"
-                    >
+
+                    <input
+                      type="text"
+                      v-model="Categoryform.title"
+                      name="title"
+                      class="form-control"
+                      id="title"
+                      placeholder="Enter Category"
+                    />
                     <has-error :form="Categoryform" field="name"></has-error>
                   </div>
-                
-                    <div class="form-group">
-                        <label>Description</label>
-                        <textarea
-                        v-model="Categoryform.description"
-                        class="form-control" name="description" rows="3"
-                        :class="{ 'is-invalid': Categoryform.errors.has('description') }"
-                         ></textarea>
-                        <has-error :form="Categoryform" field="description"></has-error>
-                  
-                    </div>
-             
-               
+
+                  <div class="form-group">
+                    <label>Description</label>
+                    <textarea
+                      v-model="Categoryform.description"
+                      class="form-control"
+                      name="description"
+                      rows="3"
+                    ></textarea>
+                  </div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-lg btn-block"
+                  >
+                    Submit
+                  </button>
                 </div>
               </form>
             </div>
             <!-- /.card -->
-            </div>
-        
+          </div>
         </div>
         <!-- /.row -->
-      </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.container-fluid -->
     </section>
-    </div>
+  </div>
 </template>
 <script>
-// import axios from "axios"
-import {Form} from "vform"
+import axios from "axios";
+// import { Form } from "vform";
 
 export default {
-   data(){
-       return {
-        Categoryform: new Form({
-           title:'',
-           description:'',
+  data() {
+    return {
+      Categoryform: {
+        title: "",
+        description: "",
+      },
+    };
+  },
+  methods: {
+    async createcategory() {
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        Accept: "application/json",
+      };
+      const credentials = {
+        title: this.Categoryform.title,
+        description: this.Categoryform.description,
+      };
+      console.log(credentials);
+      await axios
+        .post("http://192.168.0.107:8000/api/v1/category", credentials, {
+          headers,
         })
-       }        
-   },
-   methods:{
-       createcategory(){
-                this.Categoryform.post('http://192.168.0.107:8000/api/category')
-                .then(({ data }) =>{
-                    console.log(data)
-                    this.Categoryform.title='';
-                    this.Categoryform.description='';
-                    this.$toast.success({
-                      title:'Succss',
-                      message:'Category Upload Succesfully'
-                    })
-                    this.SubCategoryform.reset()
-                 })
-              }
-         }
-      }
+        .then((response) => {
+          console.log(response.data);
+          this.$toast.success({
+            title: "Succss",
+            message: "Category Upload Succesfully",
+          });
+         this.$router.push("/allcategory");
+        });
+     
+    },
+  },
+};
 </script>
-<style>
-
-</style>
+<style></style>

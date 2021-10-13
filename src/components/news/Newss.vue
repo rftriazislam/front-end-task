@@ -73,6 +73,7 @@
 <script>
 import axios from 'axios'
 import {Form} from "vform"
+import config from "../../config";
 
 export default {
     data() {
@@ -82,9 +83,9 @@ export default {
         
             category_id:'',
             description:'',
-        }),      image:'',  
-        user_id:'',     
-            categories:{},
+        }),       image:'',  
+                  user_id:'',     
+                categories:{},
         }
     },
      
@@ -93,30 +94,41 @@ export default {
             console.log(e.target.files[0]);
             this.image = e.target.files[0];
         },
-         createnews(){
-           console.log(this.Newsform.category_id),
-                this.Newsform.post('http://192.168.0.107:8000/api/news')
-                .then(({ data }) =>{
-                    console.log(data)
-                    this.Newsform.title='';
-                    this.Newsform.description='';
-                    this.Newsform.category_id='';
-                    this.image=''
-                    this.user_id=1;
-                    this.$toast.success({
-                      title:'Succss',
-                      message:'Category Upload Succesfully'
-                    })
+        async createnews(){
+          const headers = {
+                  Authorization: "Bearer " + localStorage.getItem("token"),
+                  Accept: "application/json",
+                };
+              console.log(headers);
+              const credentials = {
+                    title: this.Newsform.title,
+                    description: this.Newsform.description,
                     
-                    this.Newsfform.reset()
-                 })
+                    user_id: 1,
+                    category_id:this.Newsform.category_id
+                  };
+          console.log(credentials);
+        await axios.post("http://192.168.0.107:8000/api/v1/news", credentials, {
+          headers,
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.$toast.success({
+            title: "Succss",
+            message: "news Upload Succesfully",
+          });
+              this.$router.push("/allnews");
+
+        });
+
               },
           categoryLoad(){
-            axios.get(`http://192.168.0.107:8000/api/categories`)
-                .then(response => {
-                console.log(response)
-                this.categories = response.data.categories;
+
+             config.getData("categories").then((response) => {
+              this.categories = response.categories;
+              console.log("categories", this.categories);
             });
+            
         }
 
 

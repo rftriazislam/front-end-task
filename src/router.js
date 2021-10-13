@@ -70,7 +70,14 @@ const routes = [
           hideNavigation:true,
         },
         component:()=>import('./components/news/AllNews.vue') 
-      }
+      } ,{
+        path:'/editnews/:id',
+        name:'news.edit',
+        meta: {
+          hideNavigation:true,
+        },
+        component:()=>import('./components/news/EditNews.vue')
+      },
 
 ];
 

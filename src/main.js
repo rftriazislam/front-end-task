@@ -7,6 +7,11 @@ import { ValidationProvider } from 'vee-validate/dist/vee-validate.full.esm'
 import { ValidationObserver } from 'vee-validate'
 
 import CxltToastr from 'cxlt-vue2-toastr'
+
+
+
+
+
 var toastrConfigs = {
   position: 'top right',
   showDuration: 1000,

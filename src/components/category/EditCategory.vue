@@ -73,7 +73,7 @@ export default {
         // const id = this.$route.params.id;
         console.log(this.editData);
         axios.post(`http://192.168.0.107:8000/api/update-single-category`, this.editData)
-        
+
         .then( response =>{
         //  this.categoryForm = response.data;
          console.log(response);  
@@ -91,7 +91,7 @@ export default {
         .then( response =>{
           // this.categoryForm = response.data;
           console.log(response.data)
-          this.editData = response.data
+          this.editData = response.data.category
           console.log(' this.editData===', this.editData)
         })
       }
